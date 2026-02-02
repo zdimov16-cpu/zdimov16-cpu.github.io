@@ -1,8 +1,3 @@
-# clone your new repo
-git clone https://github.com/zdimov16-cpu/zdimov16-cpu.github.io.git
-cd zdimov16-cpu.github.io
-
-# create index.html with the page content
 cat > index.html <<'EOF'
 <!DOCTYPE html>
 <html lang="en">
@@ -72,15 +67,8 @@ cat > index.html <<'EOF'
       backdrop-filter: blur(6px);
     }
 
-    /* Tenor embed sizing */
-    .tenor-embed {
-      width: 100%;
-      height: 250px;
-      border: 0;
-      display: block;
-    }
+    .tenor-embed { width:100%; height:250px; border:0; display:block; }
 
-    /* Floating hearts */
     .heart {
       position: absolute;
       bottom: -30px;
@@ -94,7 +82,6 @@ cat > index.html <<'EOF'
       to   { transform: translateY(-115vh); opacity: 0; }
     }
 
-    /* Fireworks */
     .firework {
       position: absolute;
       width: 10px;
@@ -127,7 +114,6 @@ cat > index.html <<'EOF'
   </div>
 
   <script>
-    // Tenor GIF embed IDs (from your links)
     const TENOR_YES_ID = "4061103280538678958";
     const TENOR_NO_ID  = "16929305";
 
@@ -138,16 +124,12 @@ cat > index.html <<'EOF'
     let heartsInterval = null;
 
     function showTenor(id) {
-      // Tenor embed works reliably without guessing direct media URLs
       gifFrame.src = `https://tenor.com/embed/${id}`;
       gifWrap.style.display = "block";
     }
 
     function stopHearts() {
-      if (heartsInterval) {
-        clearInterval(heartsInterval);
-        heartsInterval = null;
-      }
+      if (heartsInterval) { clearInterval(heartsInterval); heartsInterval = null; }
     }
 
     function startHearts() {
@@ -158,19 +140,13 @@ cat > index.html <<'EOF'
     function sayYes() {
       reactionEl.textContent = "Yay!! 🎉💘 Maria said YES!!";
       showTenor(TENOR_YES_ID);
-
-      // Fireworks burst
       for (let i = 0; i < 14; i++) createFirework();
-
-      // Floating hearts
       startHearts();
     }
 
     function sayNo() {
       reactionEl.textContent = "Oh no... 😢💔";
       showTenor(TENOR_NO_ID);
-
-      // Stop hearts if they were running
       stopHearts();
     }
 
@@ -194,10 +170,10 @@ cat > index.html <<'EOF'
       setTimeout(() => heart.remove(), 4200);
     }
 
-    // Wire up buttons (No is fully clickable now)
     document.getElementById("yesBtn").addEventListener("click", sayYes);
     document.getElementById("noBtn").addEventListener("click", sayNo);
   </script>
 
 </body>
 </html>
+EOF
