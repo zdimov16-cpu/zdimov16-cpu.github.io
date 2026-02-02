@@ -1,0 +1,209 @@
+# clone your new repo
+git clone https://github.com/zdimov16-cpu/zdimov16-cpu.github.io.git
+cd zdimov16-cpu.github.io
+
+# create index.html with the page content
+cat > index.html <<'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine Proposal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #b3003b;
+      margin: 0 16px 18px;
+      line-height: 1.2;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 22px;
+      margin: 10px 0 10px;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 12px 26px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.15s;
+      box-shadow: 0px 6px 18px rgba(0,0,0,0.18);
+    }
+
+    button:hover { transform: scale(1.06); }
+    button:active { transform: scale(0.98); }
+
+    .yes { background: #ff4d6d; color: #fff; }
+    .no  { background: #2f2f2f; color: #fff; }
+
+    #reaction {
+      margin-top: 16px;
+      font-size: 1.6rem;
+      color: #660022;
+      min-height: 44px;
+      padding: 0 16px;
+    }
+
+    #gifWrap {
+      margin-top: 10px;
+      display: none;
+      width: min(380px, 90vw);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0px 10px 28px rgba(0,0,0,0.25);
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Tenor embed sizing */
+    .tenor-embed {
+      width: 100%;
+      height: 250px;
+      border: 0;
+      display: block;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -30px;
+      animation: floatUp 4.2s linear forwards;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to   { transform: translateY(-115vh); opacity: 0; }
+    }
+
+    /* Fireworks */
+    .firework {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: gold;
+      animation: explode 1s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes explode {
+      from { transform: scale(1); opacity: 1; }
+      to   { transform: scale(9); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Maria, will you be my Valentine? 💖</h1>
+
+  <div class="buttons">
+    <button class="yes" id="yesBtn">Yes 💕</button>
+    <button class="no" id="noBtn">No 💔</button>
+  </div>
+
+  <div id="reaction"></div>
+
+  <div id="gifWrap">
+    <iframe id="gifFrame" class="tenor-embed" src="" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    // Tenor GIF embed IDs (from your links)
+    const TENOR_YES_ID = "4061103280538678958";
+    const TENOR_NO_ID  = "16929305";
+
+    const reactionEl = document.getElementById("reaction");
+    const gifWrap = document.getElementById("gifWrap");
+    const gifFrame = document.getElementById("gifFrame");
+
+    let heartsInterval = null;
+
+    function showTenor(id) {
+      // Tenor embed works reliably without guessing direct media URLs
+      gifFrame.src = `https://tenor.com/embed/${id}`;
+      gifWrap.style.display = "block";
+    }
+
+    function stopHearts() {
+      if (heartsInterval) {
+        clearInterval(heartsInterval);
+        heartsInterval = null;
+      }
+    }
+
+    function startHearts() {
+      stopHearts();
+      heartsInterval = setInterval(createHeart, 350);
+    }
+
+    function sayYes() {
+      reactionEl.textContent = "Yay!! 🎉💘 Maria said YES!!";
+      showTenor(TENOR_YES_ID);
+
+      // Fireworks burst
+      for (let i = 0; i < 14; i++) createFirework();
+
+      // Floating hearts
+      startHearts();
+    }
+
+    function sayNo() {
+      reactionEl.textContent = "Oh no... 😢💔";
+      showTenor(TENOR_NO_ID);
+
+      // Stop hearts if they were running
+      stopHearts();
+    }
+
+    function createFirework() {
+      const firework = document.createElement("div");
+      firework.className = "firework";
+      firework.style.left = Math.random() * window.innerWidth + "px";
+      firework.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(firework);
+      setTimeout(() => firework.remove(), 1000);
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💗";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      const size = Math.random() * 18 + 18;
+      heart.style.fontSize = size + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4200);
+    }
+
+    // Wire up buttons (No is fully clickable now)
+    document.getElementById("yesBtn").addEventListener("click", sayYes);
+    document.getElementById("noBtn").addEventListener("click", sayNo);
+  </script>
+
+</body>
+</html>
+EOF
+
+# commit and push
+git add index.html
+git commit -m "Add Valentine proposal page"
+git push -u origin main
