@@ -207,4 +207,11 @@ EOF
 git add index.html
 git commit -m "Add Valentine proposal page"
 git push -u origin main
-  #Replace index.html — remove stray commands"
+ # overwrite index.html with the cleaned file (opens a heredoc)
+cat > index.html <<'EOF'
+[paste the exact HTML from above here, OR copy the file contents into the heredoc]
+EOF
+
+git add index.html
+git commit -m "#Replace index.html — remove stray commands"
+git push origin main
